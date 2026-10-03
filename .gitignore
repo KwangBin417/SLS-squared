@@ -12,6 +12,9 @@ models/
 *.safetensors
 *.pt
 *.pth
+*.ckpt
+*.hdf5
+.ipynb_checkpoints/
 *.h5
 reacher/models/lewm_reacher*/
 *.json

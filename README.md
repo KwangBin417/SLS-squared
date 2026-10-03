@@ -1,5 +1,29 @@
 # SLS2: Safe Latent Space Planning
 
+> **KwangBin's Kaggle branch:** this fork preserves the upstream `main` at
+> `69bf9a8b779c1ec80e0ce7c0019ec82dfe5c4dbc`. Work is on
+> `kwangbin/kaggle-reacher`.
+>
+> Start with [the Reacher Kaggle notebook](notebooks/01_kaggle_reacher.ipynb).
+> Complete Kaggle **Phone Verification**, enable **GPU T4 ×2** and **Internet**,
+> then execute its cells in order. It clones a pinned commit of this fork,
+> generates separate train/calibration/evaluation episodes, and trains the
+> original Reacher image encoder and latent dynamics for one epoch.
+> Physical state is recorded for diagnostics, not used by the training loader.
+>
+> This is an execution check, not a paper reproduction or control result.
+> Kaggle GPU execution is not yet verified. No local training has been run.
+> The trainer changes are limited to stable-pretraining 0.1.8 compatibility:
+> optimizer-step scheduling and manual-optimization gradient clipping.
+> The notebook records the commit, diff, data hashes and resolved packages with
+> its outputs. Source is not patched at runtime. Model checkpoints are saved
+> after completed epochs; an interrupted first epoch has no resume checkpoint.
+>
+> Download the output archive before stopping the Kaggle session. `Save & Run All`
+> starts a separate run; it is not a backup of the current session's files.
+
+---
+
 This repository contains code for **SLS2**, a framework for safe feedback planning from pixels with learned latent world models, conformal calibration, and robust MPC via System Level Synthesis (SLS).
 
 **Links:** [Website](https://trustworthyrobotics.github.io/SLS-squared/) | [Paper](https://trustworthyrobotics.github.io/SLS-squared/assets/paper/SLS2_paper.pdf) | [Video](https://www.youtube.com/watch?v=3sYYNSQqwSQ)
