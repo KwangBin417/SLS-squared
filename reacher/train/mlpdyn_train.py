@@ -410,7 +410,8 @@ def main() -> None:
             "modules": "model",
             "optimizer": {"type": "AdamW", "lr": args.lr, "weight_decay": args.weight_decay},
             "scheduler": {"type": "LinearWarmupCosineAnnealingLR"},
-            "interval": "epoch",
+            # stable-pretraining 0.1.8 derives this schedule from optimizer steps.
+            "interval": "step",
         },
     }
     module = spt.Module(
@@ -455,6 +456,14 @@ def main() -> None:
     data_module = spt.data.DataModule(train=train_loader, val=val_loader)
     if hasattr(torch.serialization, "add_safe_globals"):
         torch.serialization.add_safe_globals([PosixPath])
+    # Match stable-pretraining 0.1.8 Manager's manual-optimization clipping setup.
+    # Module performs clipping; Lightning's Trainer-level clipping is unsupported
+    # with manual optimization. Retain the configured value for Module to use.
+    if not module.automatic_optimization:
+        if trainer.gradient_clip_val is not None and trainer.gradient_clip_val > 0:
+            trainer.gradient_clip_val_ = trainer.gradient_clip_val
+            trainer.gradient_clip_algorithm_ = trainer.gradient_clip_algorithm
+            trainer.gradient_clip_val = None
     trainer.fit(module, datamodule=data_module, ckpt_path=str(ckpt_path) if ckpt_path.is_file() else None)
 
 
